@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Orders - ShoppingQC</title>
+  <link rel="stylesheet" href="shopping.css">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #232526, #414345);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 30px;
+      color: #ffd700;
+    }
+
+    .orders-container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .order-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+
+    .order-card h3 {
+      margin: 0;
+      color: #ffcc00;
+    }
+
+    .order-items {
+      margin-top: 10px;
+    }
+
+    .order-items li {
+      margin-bottom: 5px;
+    }
+
+    .order-total {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #90ee90;
+    }
+
+    .order-date {
+      font-size: 13px;
+      color: #aaa;
+      margin-top: 5px;
+    }
+
+    .no-orders {
+      text-align: center;
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    .clear-orders-btn {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 25px;
+      background: crimson;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .clear-orders-btn:hover {
+      background: darkred;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>My Orders</h1>
+  <div class="orders-container" id="ordersContainer">
+    <!-- Orders will be injected here -->
+  </div>
+
+  <button class="clear-orders-btn" onclick="clearOrders()">Clear Order History</button>
+
+  <script>
+    function loadOrders() {
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const container = document.getElementById("ordersContainer");
+
+      if (orders.length === 0) {
+        container.innerHTML = `<p class="no-orders">You have no past orders.</p>`;
+        return;
+      }
+
+      orders.reverse().forEach((order, i) => {
+        let itemsHTML = "";
+        order.items.forEach(item => {
+          itemsHTML += `<li>${item.name} (${item.color}) - Qty: ${item.quantity} - $${(item.quantity * item.price).toFixed(2)}</li>`;
+        });
+
+        container.innerHTML += `
+          <div class="order-card">
+            <h3>Order #${orders.length - i}</h3>
+            <ul class="order-items">${itemsHTML}</ul>
+            <div class="order-total">Total: $${order.total}</div>
+            <div class="order-date">Ordered on: ${order.date}</div>
+          </div>
+        `;
+      });
+    }
+
+    function clearOrders() {
+      if (confirm("Are you sure you want to clear all past orders?")) {
+        localStorage.removeItem("orders");
+        window.location.reload();
+      }
+    }
+
+    loadOrders();
+  </script>
+
+</body>
+</html>

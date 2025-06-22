@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart - ShoppingQC</title>
+  <link rel="stylesheet" href="shopping.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #1e90ff;
+    }
+
+    .cart-container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+    }
+
+    .cart-item img {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      margin-right: 20px;
+    }
+
+    .cart-details {
+      flex: 1;
+    }
+
+    .cart-details h3 {
+      margin: 0;
+      color: #333;
+    }
+
+    .cart-details p {
+      margin: 5px 0;
+      color: #666;
+    }
+
+    .cart-total {
+      text-align: right;
+      font-size: 18px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .clear-btn {
+      display: block;
+      margin: 30px auto 10px;
+      padding: 10px 25px;
+      background: #ff5e5e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .clear-btn:hover {
+      background: #e63939;
+    }
+
+    .order-btn {
+      display: block;
+      text-align: center;
+      margin: 10px auto 0;
+      padding: 12px 30px;
+      background: linear-gradient(to right, #00c6a7, #1e90ff);
+      color: white;
+      font-weight: bold;
+      border-radius: 10px;
+      text-decoration: none;
+      width: fit-content;
+      font-size: 16px;
+      transition: 0.3s ease;
+    }
+
+    .order-btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Your Cart</h1>
+  <div class="cart-container" id="cartContainer">
+    <!-- Cart items will be added here -->
+  </div>
+
+  <script>
+    function displayCart() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const container = document.getElementById("cartContainer");
+
+      if (cart.length === 0) {
+        container.innerHTML = "<p style='text-align:center; font-size: 18px;'>Your cart is empty.</p>";
+        return;
+      }
+
+      let total = 0;
+      cart.forEach(item => {
+        const itemTotal = item.quantity * item.price;
+        total += itemTotal;
+
+        const html = `
+          <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="cart-details">
+              <h3>${item.name}</h3>
+              <p>Size: ${item.size}</p>
+              <p>Quantity: ${item.quantity}</p>
+              <p>Price: $${item.price} × ${item.quantity} = <strong>$${itemTotal.toFixed(2)}</strong></p>
+            </div>
+          </div>
+        `;
+        container.innerHTML += html;
+      });
+
+      container.innerHTML += `<div class="cart-total">Cart Total: $${total.toFixed(2)}</div>`;
+      container.innerHTML += `<button class="clear-btn" onclick="clearCart()">Clear Cart</button>`;
+    }
+
+    function clearCart() {
+      if (confirm("Are you sure you want to clear your cart?")) {
+        localStorage.removeItem("cart");
+        window.location.reload();
+      }
+    }
+
+    displayCart();
+  </script>
+<a class="order-btn" href="order.html">Order Now</a>
+</body>
+</html>

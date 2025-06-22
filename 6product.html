@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products - B2B | E-commerce Website</title>
+  <link rel="stylesheet" href="shopping.css">
+</head>
+<body>
+  <div class="header">
+    <div class="container"> 
+      <div class="navbar">
+        <div class="logo">
+          <img src="logo.png" width="100px">
+        </div>
+        <nav>
+          <ul>
+      <li><a href="index.html"><b>Home</b></a></li>
+            <li><a href="products.html"><b>Products</b></a></li>
+            <li><a href="about.html"><b>About</b></a></li>
+            <li><a href="#"><b>Contact</b></a></li>
+            <li><a href="account.html"><b>Account</b></a></li>    
+              </ul>
+      <a href="cart.html">
+  <img src="cart.png" alt="Cart" width="30px" height="30px">
+</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!------Single Product------>
+  <div class="small-container">
+    <div class="row--0" style="text-align:left;">
+      <div class="col---2">  
+        <img src="i5.jpg" width="60%">
+      </div>
+      <div class="col---2">
+        <p>Home / Ladies dress</p> 
+        <h1 class="op">Ladies dress</h1><br>
+        <h4 class="ppo">$7.5/-</h4><br>
+        <select class="sso">
+          <option>Selct size</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+          <option>11</option>
+        </select><br><br>
+        <input type="number" value="1" class="ddo"><br><br>
+        <button class="btn" onclick="addToCart()">Add To Cart</button><br><br>
+        <h3>Product Details</h3>
+        <p>This is an ideal ladies dress for bulk sales or for wearing, with good touch of cotton with offerings of sleek and good design.</p>        
+      </div>
+    </div>
+  </div>
+
+  <!-- Other Products (keep as-is, no need to modify now) -->
+  <!-- ... -->
+
+  <!-- Add to Cart JavaScript -->
+  <script>
+    function addToCart() {
+      const product = {
+        name: "Ladies dress",
+        price: 7.5,
+        quantity: parseInt(document.querySelector(".ddo").value),
+        size: document.querySelector(".sso").value,
+        image: "i5.jpg"
+      };
+
+      if (product.size === "Selct size") {
+        alert("Please select a valid size.");
+        return;
+      }
+
+      // Get existing cart from localStorage
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      // Check if the item already exists with same name and size
+      const existing = cart.find(item => item.name === product.name && item.size === product.size);
+
+      if (existing) {
+        existing.quantity += product.quantity;
+      } else {
+        cart.push(product);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert("Product added to cart!");
+    }
+  </script>
+</body>
+</html>
